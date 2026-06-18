@@ -2,7 +2,7 @@ import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import fs from "fs";
 import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf.mjs";
 
-export async function indexTheDocument(filePath) {
+export async function indexDocument(filePath) {
   const dataBuffer = new Uint8Array(fs.readFileSync(filePath));
   const loadingTask = pdfjsLib.getDocument({ data: dataBuffer });
   const pdfDoc = await loadingTask.promise;
@@ -14,6 +14,8 @@ export async function indexTheDocument(filePath) {
     const pageText = textContent.items.map((item) => item.str).join(" ");
     fullText += pageText + "\n";
   }
+  console.log("Extracted text length:", fullText.length);
+console.log("First 200 chars:", fullText.substring(0, 200));
 
   const textSplitter = new RecursiveCharacterTextSplitter({
     chunkSize: 500,
@@ -21,6 +23,5 @@ export async function indexTheDocument(filePath) {
   });
 
   const chunks = await textSplitter.splitText(fullText);
-  console.log("Total chunks:", chunks.length);
-  console.log("First chunk preview:", chunks[0]);
+  return chunks;
 }
