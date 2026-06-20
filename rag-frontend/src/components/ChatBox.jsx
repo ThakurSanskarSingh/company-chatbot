@@ -41,27 +41,39 @@ function ChatBox({ documentId }) {
   };
 
   return (
-    <div>
-      <div>
+    <div className="chat">
+      <div className="chat-log" aria-live="polite">
+        {messages.length === 0 && !loading && (
+          <div className="chat-empty">
+            <span>[SESSION READY]</span>
+            <span>Enter a query to inspect the indexed source.</span>
+          </div>
+        )}
         {messages.map((msg, idx) => (
-          <div key={idx}>
-            <strong>{msg.role === "user" ? "You" : "AI"}:</strong> {msg.content}
+          <div className={`message message--${msg.role}`} key={idx}>
+            <strong className="message__role">{msg.role === "user" ? "user@local:~$" : "insight_ai:~#"}</strong>
+            <span className="message__content">{msg.content}</span>
           </div>
         ))}
-        {loading && <p>Thinking...</p>}
+        {loading && <p className="thinking">[PROCESSING] RETRIEVING CONTEXT</p>}
       </div>
 
-      <input
-        type="text"
-        value={question}
-        onChange={(e) => setQuestion(e.target.value)}
-        onKeyPress={handleKeyPress}
-        placeholder="Ask something about your document..."
-        disabled={loading}
-      />
-      <button onClick={handleAsk} disabled={loading || !question.trim()}>
-        Send
-      </button>
+      <div className="command-line">
+        <label className="command-line__prompt" htmlFor="document-query">user@local:~$</label>
+        <input
+          id="document-query"
+          type="text"
+          value={question}
+          onChange={(e) => setQuestion(e.target.value)}
+          onKeyPress={handleKeyPress}
+          placeholder="ask something about your document..."
+          disabled={loading}
+          autoComplete="off"
+        />
+        <button className="terminal-button" onClick={handleAsk} disabled={loading || !question.trim()}>
+          [ SEND ]
+        </button>
+      </div>
     </div>
   );
 }

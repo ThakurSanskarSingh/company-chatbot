@@ -40,12 +40,25 @@ function UploadPdf({onUpload}) {
     }
 
     return (
-        <div>
-            <input type="file" accept=".pdf" onChange={handleFileChange} />
-      <button onClick={handleUpload} disabled={uploading || !file}>
-        {uploading ? "Processing..." : "Upload PDF"}
+        <div className="upload-zone">
+            <input className="file-input" id="pdf-file" type="file" accept=".pdf" onChange={handleFileChange} />
+      <label className="file-drop" htmlFor="pdf-file">
+        <span>
+          <span className="file-drop__icon" aria-hidden="true">[ + ]</span>
+          SELECT PDF FROM LOCAL FILESYSTEM
+          <span className="file-drop__hint">accepted_format: .pdf // single_document</span>
+        </span>
+      </label>
+      {file && (
+        <div className="selected-file" aria-live="polite">
+          <span>[FILE DETECTED]</span>
+          <span>{file.name}</span>
+        </div>
+      )}
+      <button className="terminal-button" onClick={handleUpload} disabled={uploading || !file}>
+        {uploading ? "[ INDEXING DOCUMENT... ]" : "[ INITIATE UPLOAD ]"}
       </button>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p className="error-message" role="alert">[ERR] {error}</p>}
     </div>
   );
 }
