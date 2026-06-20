@@ -1,5 +1,8 @@
 import {useState} from "react";
 import axios from "axios";
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
+
 function UploadPdf({onUpload}) {
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
@@ -22,7 +25,7 @@ function UploadPdf({onUpload}) {
         formData.append("pdf", file);
 
         try {
-         const response = await axios.post("http://localhost:3001/api/upload",
+         const response = await axios.post(`${API_BASE_URL}/api/upload`,
             formData, {
                 headers : {"Content-Type": "multipart/form-data"}
             });

@@ -1,9 +1,8 @@
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
-import fs from "fs";
 import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf.mjs";
 
-export async function indexDocument(filePath) {
-  const dataBuffer = new Uint8Array(fs.readFileSync(filePath));
+export async function indexDocument(fileBuffer) {
+  const dataBuffer = new Uint8Array(fileBuffer);
   const loadingTask = pdfjsLib.getDocument({ data: dataBuffer });
   const pdfDoc = await loadingTask.promise;
 

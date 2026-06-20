@@ -1,0 +1,10 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "npm run build --prefix rag-frontend",
+  "outputDirectory": "rag-frontend/dist",
+  "functions": {
+    "api/*.js": {
+      "maxDuration": 60
+    }
+  }
+}

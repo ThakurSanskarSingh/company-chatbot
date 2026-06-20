@@ -12,7 +12,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const upload = multer({ dest: "uploads/" });
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 10 * 1024 * 1024 },
+});
 
 
 app.post("/api/upload", upload.single("pdf"), async (req, res) => {
@@ -22,9 +25,7 @@ app.post("/api/upload", upload.single("pdf"), async (req, res) => {
     }
 
     const documentId = uuidv4();
-    const filePath = req.file.path;
-
-    const chunks = await indexDocument(filePath);
+    const chunks = await indexDocument(req.file.buffer);
     await storeChunks(chunks, documentId);
 
     res.json({
@@ -61,4 +62,8 @@ app.post("/api/query", async (req, res) => {
 });
 
 const PORT = 3001;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+}
+
+export default app;

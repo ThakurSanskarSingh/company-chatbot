@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
+
 function ChatBox({ documentId }) {
   const [question, setQuestion] = useState("");
   const [messages, setMessages] = useState([]);
@@ -15,7 +17,7 @@ function ChatBox({ documentId }) {
     setLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:3001/api/query", {
+      const response = await axios.post(`${API_BASE_URL}/api/query`, {
         question,
         documentId,
       });
