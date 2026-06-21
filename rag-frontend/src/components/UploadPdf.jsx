@@ -25,7 +25,7 @@ function UploadPdf({onUpload}) {
         formData.append("pdf", file);
 
         try {
-         const response = await axios.post(`${API_BASE_URL}/api/upload`,
+         const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/upload`,
             formData, {
                 headers : {"Content-Type": "multipart/form-data"}
             });
